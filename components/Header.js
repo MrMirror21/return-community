@@ -33,6 +33,7 @@ const HeaderBar = styled.div`
   background: linear-gradient(to right, #33ccff, #00ffcc);
   position: fixed;
   top: 0px;
+  z-index: 100;
 `;
 
 const Logo = styled.div`
