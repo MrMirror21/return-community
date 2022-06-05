@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "next/link";
 import styled from "styled-components";
 import Triangle from "../public/iconmonstr-triangle-filled.svg";
 
@@ -6,23 +7,25 @@ const PostElement = ({ post }) => {
   const comment = post.comment ? "[" + post.comment + "]" : "";
   return (
     <>
-      <Container>
-        <ThumbsIndicator>
-          <Triangle fill="#8b8b8b" />
-          <Thumbs>{post.thumbs}</Thumbs>
-        </ThumbsIndicator>
-        <ContentBox>
-          <TitleBox>
-            <Title>{post.title}</Title>
-            <Comments>{comment}</Comments>
-          </TitleBox>
-          <InfoBox>
-            <Tag>{post.tag}</Tag>
-            <Time>{post.time}</Time>
-            <Writer>{post.writer}</Writer>
-          </InfoBox>
-        </ContentBox>
-      </Container>
+      <Link href="/posts/[id]" as={`/posts/${post.id}`}>
+        <Container>
+          <ThumbsIndicator>
+            <Triangle fill="#8b8b8b" />
+            <Thumbs>{post.thumbs}</Thumbs>
+          </ThumbsIndicator>
+          <ContentBox>
+            <TitleBox>
+              <Title>{post.title}</Title>
+              <Comments>{comment}</Comments>
+            </TitleBox>
+            <InfoBox>
+              <Tag>{post.tag}</Tag>
+              <Time>{post.time}</Time>
+              <Writer>{post.writer}</Writer>
+            </InfoBox>
+          </ContentBox>
+        </Container>
+      </Link>
     </>
   );
 };
