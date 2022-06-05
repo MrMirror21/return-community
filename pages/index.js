@@ -1,7 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import PostElement from "../components/PostElement";
+import Pen from "../public/pen.svg";
+import Flame from "../public/flame.svg";
+import Clock from "../public/clock.svg";
 import { posts } from "../store/state";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -13,7 +17,7 @@ export default function Home() {
             <TabMenu>
               <TabElement>
                 <LabelText>홈</LabelText>
-                <MainText>전체</MainText>
+                <MainText id="current">전체</MainText>
               </TabElement>
               <TabElement>
                 <LabelText>정보</LabelText>
@@ -28,15 +32,32 @@ export default function Home() {
             </TabMenu>
             <MainTab>
               <MainHeadBlock>
-                <CurrentPageName>전체</CurrentPageName>
+                <BlockHeader>
+                  <CurrentPageName>전체</CurrentPageName>
+                  <Link href="/write">
+                    <IconContainer>
+                      <Pen fill="#46CFA7" className="icon" />
+                    </IconContainer>
+                  </Link>
+                </BlockHeader>
                 <FilterBox>
-                  <Filter>Popular</Filter>
-                  <Filter>Latest</Filter>
+                  <FilterElement>
+                    <IconBox>
+                      <Flame fill="#c9c9c9" />
+                    </IconBox>
+                    <Filter>Popular</Filter>
+                  </FilterElement>
+                  <FilterElement>
+                    <IconBox>
+                      <Clock fill="#c9c9c9" />
+                    </IconBox>
+                    <Filter>Latest</Filter>
+                  </FilterElement>
                 </FilterBox>
               </MainHeadBlock>
               <MainContentBlock>
                 {posts.map((post) => (
-                    <PostElement post={post} />
+                  <PostElement post={post} />
                 ))}
               </MainContentBlock>
             </MainTab>
@@ -53,10 +74,12 @@ const Outlay = styled.div`
   display: flex;
   justify-content: center;
   background: #f3f3f3;
+  position: sticky;
+  top: 0px;
 `;
 const Container = styled.div`
   position: absolute;
-  top: 150px;
+  top: -100px;
   width: 1044px;
   margin: auto;
 `;
@@ -65,6 +88,7 @@ const PageName = styled.div`
   margin-bottom: 20px;
   font-size: 30px;
   font-weight: 600;
+  color: #ffffff;
 `;
 const MainGrid = styled.div`
   display: flex;
@@ -85,6 +109,10 @@ const TabElement = styled.div`
   width: 300px;
   padding: 9px 16px 8px;
   border-bottom: 1px solid #c9c9c9;
+  #current {
+    background: #f2f2f2;
+    color: #46cfa7;
+  }
 `;
 const LabelText = styled.div`
   width: 268px;
@@ -108,12 +136,27 @@ const MainTab = styled.div`
   margin-left: 14px;
 `;
 const MainHeadBlock = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 728px;
   background: white;
   position: sticky;
   top: 56px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
+
+const BlockHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding-right: 20px;
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
 const CurrentPageName = styled.div`
   padding: 18px 16px 17px;
   font-size: 18px;
@@ -124,8 +167,22 @@ const FilterBox = styled.div`
   width: 728px;
   padding: 0px 16px;
 `;
+
+const FilterElement = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const IconBox = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+  padding-right: 5px;
+`;
+
 const Filter = styled.div`
   font-size: 14px;
   padding: 10px 2px 14px;
+  color: #c9c9c9;
 `;
 const MainContentBlock = styled.div``;
