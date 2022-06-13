@@ -1,13 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import PostElement from "../components/PostElement";
 import Pen from "../public/pen.svg";
 import Flame from "../public/flame.svg";
 import Clock from "../public/clock.svg";
+import TriangleDown from "../public/iconmonstr-triangle-filled.svg";
 import { posts } from "../store/state";
 import Link from "next/link";
 
 export default function Home() {
+  const [currentSearchFilter, setCurrentSearchFilter] = useState("제목");
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [searchValue, setSearchValue] = useState("dd");
+  const handleSearch = (e) => {
+    setSearchValue(e.currentTarget.value);
+  }
   return (
     <>
       <Outlay>
@@ -53,6 +60,23 @@ export default function Home() {
                     </IconBox>
                     <Filter>Latest</Filter>
                   </FilterElement>
+                  <SearchBox>
+                    <SearchFilterSelector>
+                      <SearchFilterShowcase onClick={() => setShowDropdown(!showDropdown)}>
+                        {currentSearchFilter}
+                        <TriangleDown id="dropdown-trigger" />
+                      </SearchFilterShowcase>
+                      <FilterDropDown
+                        className={showDropdown === false && "hidden"}
+                      >
+                        <DropDownElement onClick={() => setCurrentSearchFilter('제목')}>제목</DropDownElement>
+                        <DropDownElement onClick={() => setCurrentSearchFilter('작성자')}>작성자</DropDownElement>
+                      </FilterDropDown>
+                    </SearchFilterSelector>
+                    <SearchBar>
+                      <input type="text" value={searchValue} onChange={handleSearch}/>
+                    </SearchBar>
+                  </SearchBox>
                 </FilterBox>
               </MainHeadBlock>
               <MainContentBlock>
@@ -171,6 +195,77 @@ const FilterBox = styled.div`
 const FilterElement = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const SearchBox = styled.div`
+  display: flex;
+  width: 322px;
+  height: 36px;
+  align-items: center;
+  border: 1px solid #c9c9c9;
+  border-radius: 8px;
+  box-sizing: border-box;
+`;
+const SearchFilterSelector = styled.div`
+  .hidden {
+    display: none;
+  }
+`;
+
+const SearchFilterShowcase = styled.div`
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 122px;
+  height: 36px;
+  padding: 5px;
+  #dropdown-trigger {
+    position: absolute;
+    left: 100px;
+    transform: rotate(180deg);
+    fill: #c9c9c9;
+  }
+  padding-left: 10px;
+  border-radius: 8px;
+  :hover {
+    cursor: pointer;
+    background: #c9c9c9;
+    color: #ffffff;
+    transition: 0.5s;
+    #dropdown-trigger {
+      fill: #ffffff;
+      transition: 0.5s;
+    }
+  }
+`;
+
+const SearchBar = styled.div`
+  input {
+    font-size: 14px;
+    outline: none;
+    border: none;
+  }
+`;
+
+const FilterDropDown = styled.div`
+  position: absolute;
+`;
+const DropDownElement = styled.div`
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  width: 122px;
+  height: 36px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  color: #8b8b8b;
+  padding-left: 10px;
+  font-size: 14px;
+  :hover {
+    cursor: pointer;
+    background: #c9c9c9;
+    color: #ffffff;
+    transition: 0.5s;
+  }
 `;
 
 const IconBox = styled.div`
