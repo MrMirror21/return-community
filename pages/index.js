@@ -15,6 +15,11 @@ export default function Home() {
   const handleSearch = (e) => {
     setSearchValue(e.currentTarget.value);
   }
+  const matchOrNot = (title, forSearch) => {
+    const matchResult = title.toLowerCase().includes(forSearch.toLowerCase());
+    return matchResult;
+  }
+  const searchedPosts = searchValue === "" ? posts : posts.filter(post => matchOrNot(post.title, searchValue));
   return (
     <>
       <Outlay>
@@ -80,7 +85,7 @@ export default function Home() {
                 </FilterBox>
               </MainHeadBlock>
               <MainContentBlock>
-                {posts.map((post) => (
+                {searchedPosts.map((post) => (
                   <PostElement post={post} />
                 ))}
               </MainContentBlock>
