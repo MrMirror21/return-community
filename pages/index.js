@@ -11,15 +11,19 @@ import Link from "next/link";
 export default function Home() {
   const [currentSearchFilter, setCurrentSearchFilter] = useState("제목");
   const [showDropdown, setShowDropdown] = useState(false);
-  const [searchValue, setSearchValue] = useState("dd");
+  const [searchValue, setSearchValue] = useState("");
   const handleSearch = (e) => {
     setSearchValue(e.currentTarget.value);
   }
+  const [currentSort, setCurrentSort] = useState("popular");
   const matchOrNot = (title, forSearch) => {
     const matchResult = title.toLowerCase().includes(forSearch.toLowerCase());
     return matchResult;
   }
   const searchedPosts = searchValue === "" ? posts : posts.filter(post => matchOrNot(post.title, searchValue));
+  const sortedPosts = currentSort === "popular" ?searchedPosts.sort((post1, post2) => {
+    return post1.thumbs > post2.thumbs ? -1 : 1;
+  }) : searchedPosts;
   return (
     <>
       <Outlay>
@@ -53,17 +57,17 @@ export default function Home() {
                   </Link>
                 </BlockHeader>
                 <FilterBox>
-                  <FilterElement>
+                  <FilterElement onClick={() => setCurrentSort("popular")}>
                     <IconBox>
-                      <Flame fill="#c9c9c9" />
+                      <Flame fill="#c9c9c9" className={currentSort === "popular" && "current"}/>
                     </IconBox>
-                    <Filter>Popular</Filter>
+                    <Filter className={currentSort === "popular" && "current"}>Popular</Filter>
                   </FilterElement>
-                  <FilterElement>
+                  <FilterElement onClick={() => setCurrentSort("latest")}>
                     <IconBox>
-                      <Clock fill="#c9c9c9" />
+                      <Clock fill="#c9c9c9" className={currentSort === "latest" && "current"}/>
                     </IconBox>
-                    <Filter>Latest</Filter>
+                    <Filter className={currentSort === "latest" && "current"}>Latest</Filter>
                   </FilterElement>
                   <SearchBox>
                     <SearchFilterSelector>
@@ -85,7 +89,7 @@ export default function Home() {
                 </FilterBox>
               </MainHeadBlock>
               <MainContentBlock>
-                {searchedPosts.map((post) => (
+                {sortedPosts.map((post) => (
                   <PostElement post={post} />
                 ))}
               </MainContentBlock>
@@ -200,6 +204,10 @@ const FilterBox = styled.div`
 const FilterElement = styled.div`
   display: flex;
   justify-content: center;
+  .current {
+    fill: #46cfa7;
+    color: #46cfa7;
+  }
 `;
 
 const SearchBox = styled.div`
@@ -279,6 +287,8 @@ const IconBox = styled.div`
   padding-top: 8px;
   padding-right: 5px;
 `;
+
+
 
 const Filter = styled.div`
   font-size: 14px;
