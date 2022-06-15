@@ -1,8 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import router from "next/router";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
+import { postsState } from "../store/state";
 
 const write = () => {
-  const [selectedChannel, setSelectedChannel] = useState("자유");
+  const [channel, setChannel] = useState("자유");
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [posts, setPosts] = useRecoilState(postsState);
+  const PostsRef = useRef();
+  PostsRef.current = posts;
+  const handleInput = (type) => (event) => {
+    const targetValue = event.currentTarget.value;
+    type === "title" ? setTitle(targetValue) : setContent(targetValue);
+    }
+  const checkNotEmpty = () => {
+    if(title !== "" && content !== "") return true;
+    else alert("게시글의 제목, 내용을 입력해주세요");
+  }
+  const submitPost = async () => {
+    let post = {
+      id: posts[posts.length - 1].id + 1,
+      title: title,
+      content:content,
+      thumbs: 0,
+      tag: channel,
+      time: "6 hours ago",
+      writer: "returnbest123",
+    };
+    const newPosts = [...PostsRef.current].concat(post);
+    try {
+      await setPosts(newPosts);
+      alert("작성 완료되었습니다.");
+      router.push("/");
+    } catch (error) {
+      alert(error);
+    }
+  }
+  const handleSubmit = async () => {
+    checkNotEmpty() && submitPost();
+  };
   return (
     <>
       <Outlay>
@@ -28,24 +66,24 @@ const write = () => {
             <MainTab>
               <PageTitle>Post Write</PageTitle>
               <ChannelSelector>
-                <SelectElement>
-                  <Checker id="selected" />
+                <SelectElement onClick={() => setChannel("자유")}>
+                  <Checker id={channel === "자유" && "selected"} />
                   <ChannelName>자유</ChannelName>
                 </SelectElement>
-                <SelectElement>
-                  <Checker />
+                <SelectElement onClick={() => setChannel("유머")}>
+                  <Checker id={channel === "유머" && "selected"} />
                   <ChannelName>유머</ChannelName>
                 </SelectElement>
-                <SelectElement>
-                  <Checker />
+                <SelectElement onClick={() => setChannel("개발 팁, 노하우")}>
+                  <Checker id={channel === "개발 팁, 노하우" && "selected"} />
                   <ChannelName>개발 팁, 노하우</ChannelName>
                 </SelectElement>
               </ChannelSelector>
-              <TitleInput placeholder="제목"></TitleInput>
-              <ContentInput placeholder="어떤 내용을 공유하고 싶으신가요?"></ContentInput>
+              <TitleInput placeholder="제목" value={title} onChange={handleInput("title")}></TitleInput>
+              <ContentInput placeholder="어떤 내용을 공유하고 싶으신가요?" value={content} onChange={handleInput("content")}></ContentInput>
               <ButtonContainer>
                 <CancelButton>취소</CancelButton>
-                <ApproveButton>완료</ApproveButton>
+                <ApproveButton onClick = {handleSubmit}>완료</ApproveButton>
               </ButtonContainer>
             </MainTab>
           </MainGrid>
@@ -141,6 +179,7 @@ const SelectElement = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: 10px;
+  cursor: pointer;
   #selected {
     background: #46cfa7;
   }
