@@ -1,29 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled from "styled-components";
 import PostElement from "../components/PostElement";
 import Pen from "../public/pen.svg";
 import Flame from "../public/flame.svg";
 import Clock from "../public/clock.svg";
 import TriangleDown from "../public/iconmonstr-triangle-filled.svg";
-import { posts } from "../store/state";
+import { postsState } from "../store/state";
 import Link from "next/link";
+import { useRecoilValue } from 'recoil';
 
 export default function Home() {
   const [currentSearchFilter, setCurrentSearchFilter] = useState("제목");
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchValue, setSearchValue] = useState("");
+  const [currentSort, setCurrentSort] = useState("popular");
+  const posts = useRecoilValue(postsState);
+  const PostsRef = useRef();
+  PostsRef.current = posts;
+
   const handleSearch = (e) => {
     setSearchValue(e.currentTarget.value);
   }
-  const [currentSort, setCurrentSort] = useState("popular");
   const matchOrNot = (title, forSearch) => {
     const matchResult = title.toLowerCase().includes(forSearch.toLowerCase());
     return matchResult;
   }
+  const sortPosts = (origin) => {
+    let result = origin.filter(elem => elem);
+    result.sort((post1, post2) => {
+      return post1.thumbs > post2.thumbs ? -1 : 1;
+    });
+    return result;
+  }
   const searchedPosts = searchValue === "" ? posts : posts.filter(post => matchOrNot(post.title, searchValue));
-  const sortedPosts = currentSort === "popular" ?searchedPosts.sort((post1, post2) => {
-    return post1.thumbs > post2.thumbs ? -1 : 1;
-  }) : searchedPosts;
+  const sortedPosts = currentSort === "popular" ? sortPosts(searchedPosts) : searchedPosts;
   return (
     <>
       <Outlay>
