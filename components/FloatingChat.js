@@ -63,8 +63,9 @@ const Container = styled.div`
   position: fixed;
   top: 260px;
   right: 11vw;
-  display: ${(props) => props.isOpen === false && "none"};
+  opacity: ${(props) => props.isOpen === false ? 0 : 1};
   border-radius: 10px;
+  transition: all 0.25s ease-in-out;
   .str-chat-channel {
     max-height: 530px;
     max-width: 400px;
