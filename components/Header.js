@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import khu from './khuBg.jpg';
+import khu from "./khuBg.jpg";
 
+console.log(khu);
 const Header = () => {
   return (
     <>
@@ -12,7 +13,7 @@ const Header = () => {
             <UserProfile />
           </RightToolBox>
         </HeaderBar>
-        <Banner src={khu} alt="Background"/>
+        <Banner src={khu} alt="Background" />
       </Container>
     </>
   );

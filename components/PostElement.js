@@ -19,7 +19,7 @@ const PostElement = ({ post }) => {
               <Comments>{comment}</Comments>
             </TitleBox>
             <InfoBox>
-              <Tag>{post.tag}</Tag>
+              <Channel>{post.channel}</Channel>
               <Time>{post.time}</Time>
               <Writer>{post.writer}</Writer>
             </InfoBox>
@@ -88,7 +88,7 @@ const InfoBox = styled.div`
   font-size: 15px;
   line-height: 20px;
 `;
-const Tag = styled.div`
+const Channel = styled.div`
   padding-right: 10px;
   border-right: 1px solid #c9c9c9;
 `;
