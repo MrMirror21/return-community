@@ -5,13 +5,13 @@ import Pen from "../public/pen.svg";
 import Flame from "../public/flame.svg";
 import Clock from "../public/clock.svg";
 import TriangleDown from "../public/iconmonstr-triangle-filled.svg";
-import { postsState } from "../store/state";
+import { currentPageState, postsState } from "../store/state";
 import Link from "next/link";
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 export default function Home() {
   const [currentSearchFilter, setCurrentSearchFilter] = useState("제목");
-  const [currentPage, setCurrentPage] = useState("전체");
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [currentSort, setCurrentSort] = useState("popular");

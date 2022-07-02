@@ -2,9 +2,10 @@ import React, { useState, useRef } from "react";
 import router from "next/router";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import { postsState } from "../store/state";
+import { currentPageState, postsState } from "../store/state";
 
 const write = () => {
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
   const [channel, setChannel] = useState("자유");
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -28,6 +29,7 @@ const write = () => {
       tag: channel,
       time: "6 hours ago",
       writer: "returnbest123",
+      comments: [],
     };
     const newPosts = [...PostsRef.current].concat(post);
     try {
@@ -49,18 +51,18 @@ const write = () => {
           <MainGrid>
             <TabMenu>
               <TabElement>
-                <LabelText>홈</LabelText>
-                <MainText id="current">전체</MainText>
+              <LabelText>홈</LabelText>
+                <MainText id={currentPage === "전체" && "current"} onClick={() => setCurrentPage("전체")}>전체</MainText>
               </TabElement>
               <TabElement>
                 <LabelText>정보</LabelText>
-                <MainText>개발 팁, 노하우</MainText>
+                <MainText id={currentPage === "팁" && "current"} onClick={() => setCurrentPage("개발 팁, 노하우")}>개발 팁, 노하우</MainText>
                 <MainText>일정</MainText>
               </TabElement>
               <TabElement>
                 <LabelText>커뮤니티</LabelText>
-                <MainText>자유</MainText>
-                <MainText>유머</MainText>
+                <MainText id={currentPage === "자유" && "current"} onClick={() => setCurrentPage("자유")}>자유</MainText>
+                <MainText id={currentPage === "유머" && "current"} onClick={() => setCurrentPage("유머")}>유머</MainText>
               </TabElement>
             </TabMenu>
             <MainTab>
