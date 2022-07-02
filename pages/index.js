@@ -11,6 +11,7 @@ import { useRecoilValue } from 'recoil';
 
 export default function Home() {
   const [currentSearchFilter, setCurrentSearchFilter] = useState("제목");
+  const [currentPage, setCurrentPage] = useState("전체");
   const [showDropdown, setShowDropdown] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [currentSort, setCurrentSort] = useState("popular");
@@ -32,7 +33,8 @@ export default function Home() {
     });
     return result;
   }
-  const searchedPosts = searchValue === "" ? posts : posts.filter(post => matchOrNot(post.title, searchValue));
+  const currentPagePosts = currentPage === "전체" ? posts : posts.filter(post => post.channel === currentPage);
+  const searchedPosts = searchValue === "" ? currentPagePosts : currentPagePosts.filter(post => matchOrNot(post.title, searchValue));
   const sortedPosts = currentSort === "popular" ? sortPosts(searchedPosts) : searchedPosts;
   return (
     <>
@@ -43,17 +45,17 @@ export default function Home() {
             <TabMenu>
               <TabElement>
                 <LabelText>홈</LabelText>
-                <MainText id="current">전체</MainText>
+                <MainText id={currentPage === "전체" && "current"} onClick={() => setCurrentPage("전체")}>전체</MainText>
               </TabElement>
               <TabElement>
                 <LabelText>정보</LabelText>
-                <MainText>개발 팁, 노하우</MainText>
+                <MainText id={currentPage === "팁" && "current"} onClick={() => setCurrentPage("개발 팁, 노하우")}>개발 팁, 노하우</MainText>
                 <MainText>일정</MainText>
               </TabElement>
               <TabElement>
                 <LabelText>커뮤니티</LabelText>
-                <MainText>자유</MainText>
-                <MainText>유머</MainText>
+                <MainText id={currentPage === "자유" && "current"} onClick={() => setCurrentPage("자유")}>자유</MainText>
+                <MainText id={currentPage === "유머" && "current"} onClick={() => setCurrentPage("유머")}>유머</MainText>
               </TabElement>
             </TabMenu>
             <MainTab>
@@ -198,6 +200,7 @@ const IconContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 `;
 
 const CurrentPageName = styled.div`
@@ -218,6 +221,7 @@ const FilterElement = styled.div`
     fill: #46cfa7;
     color: #46cfa7;
   }
+  cursor: pointer;
 `;
 
 const SearchBox = styled.div`

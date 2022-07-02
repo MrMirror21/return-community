@@ -1,19 +1,20 @@
+import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
-import khu from "./khuBg.jpg";
 
-console.log(khu);
 const Header = () => {
   return (
     <>
       <Container>
         <HeaderBar>
-          <Logo>Return</Logo>
+          <Link href="/">
+            <Logo>Return</Logo>
+          </Link>
           <RightToolBox>
             <UserProfile />
           </RightToolBox>
         </HeaderBar>
-        <Banner src={khu} alt="Background" />
+        <Banner alt="Background" />
       </Container>
     </>
   );
@@ -45,6 +46,7 @@ const Logo = styled.div`
   font-size: 25px;
   color: white;
   font-weight: 700;
+  cursor: pointer;
 `;
 
 const RightToolBox = styled.div`
