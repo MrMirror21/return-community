@@ -37,10 +37,10 @@ const FloatingChat = ({ isOpen }) => {
 
   return (
     <>
-      <Container isOpen={isOpen}>
+      <Container isOpen={isOpen} >
         <Chat client={client}>
           <Channel isOpen={isOpen} channel={channel} theme="messaging light">
-            <Window isOpen={isOpen} id={isOpen ? "" : "hidden"}>
+            <Window isOpen={isOpen} className={isOpen ? "" : "hidden"}>
               <ChannelHeader />
               <MessageList />
               <MessageInput />
@@ -56,12 +56,13 @@ export default FloatingChat;
 
 const Container = styled.div`
   #hidden {
-    visibility: hidden;
+    display: none;
+    z-index: -1;
   }
   width: 400px;
   height: 530px;
   position: fixed;
-  top: 260px;
+  top: ${(props) => props.isOpen === false ? "1000px": "260px"};
   right: 11vw;
   opacity: ${(props) => props.isOpen === false ? 0 : 1};
   border-radius: 10px;
